@@ -1,0 +1,42 @@
+---
+import "@workspace/ui/globals.css";
+import Scoreboard from "@/components/Scoreboard";
+---
+
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Bảng Tỉ Số Bóng Bàn</title>
+    <meta name="description" content="Bảng tỉ số bóng bàn - Hiển thị" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+        background: #050505;
+        cursor: none;
+      }
+      body.show-cursor {
+        cursor: default;
+      }
+    </style>
+  </head>
+  <body class="dark">
+    <Scoreboard client:load />
+    <script>
+      let timeout: ReturnType<typeof setTimeout>;
+      const body = document.body;
+      function showCursor() {
+        body.classList.add("show-cursor");
+        clearTimeout(timeout);
+        timeout = setTimeout(() => body.classList.remove("show-cursor"), 3000);
+      }
+      document.addEventListener("mousemove", showCursor);
+      document.addEventListener("mousedown", showCursor);
+    </script>
+  </body>
+</html>

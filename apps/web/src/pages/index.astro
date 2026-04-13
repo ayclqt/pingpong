@@ -1,25 +1,17 @@
 ---
-import "@workspace/ui/globals.css"
-import { Button } from "@workspace/ui/components/button"
+import "@workspace/ui/globals.css";
+import ControlPanel from "@/components/ControlPanel";
 ---
 
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Astro App</title>
+    <title>Bảng Tỉ Số Bóng Bàn — Điều Khiển</title>
+    <meta name="description" content="Trang điều khiển bảng tỉ số bóng bàn" />
   </head>
-  <body>
-    <div class="flex min-h-svh p-6">
-      <div class="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 class="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We've already added the button component for you.</p>
-          <Button client:load className="mt-2">Button</Button>
-        </div>
-      </div>
-    </div>
+  <body class="dark">
+    <ControlPanel client:load />
   </body>
 </html>
