@@ -19,10 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@latest
+        uses: actions/checkout@v6
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@latest
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
@@ -31,7 +31,7 @@ jobs:
 
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@latest
+        uses: actions/configure-pages@v6
 
       - name: Build
         run: bun run build
@@ -40,7 +40,7 @@ jobs:
           PUBLIC_GITHUB_PAGES_SITE: ${{ steps.pages.outputs.origin }}
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@latest
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./apps/web/dist
 
@@ -54,4 +54,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@latest
+        uses: actions/deploy-pages@v5
