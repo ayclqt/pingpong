@@ -1,140 +1,135 @@
-import { useGameState } from "@workspace/ui/hooks/use-game-state";
-import { countSetWins } from "@workspace/ui/lib/game-state";
-import { useEffect, useRef, useState } from "react";
+import { useGameState } from "@workspace/ui/hooks/use-game-state"
+import { countSetWins } from "@workspace/ui/lib/game-state"
+import { useEffect, useRef, useState } from "react"
 
 export default function Scoreboard() {
-	const { state } = useGameState("display");
-	const [prevScoreA, setPrevScoreA] = useState(state.teamA.score);
-	const [prevScoreB, setPrevScoreB] = useState(state.teamB.score);
-	const [animateA, setAnimateA] = useState(false);
-	const [animateB, setAnimateB] = useState(false);
-	const [animateSwap, setAnimateSwap] = useState(false);
-	const prevSwapped = useRef(state.swapped);
+  const { state } = useGameState("display")
+  const [prevScoreA, setPrevScoreA] = useState(state.teamA.score)
+  const [prevScoreB, setPrevScoreB] = useState(state.teamB.score)
+  const [animateA, setAnimateA] = useState(false)
+  const [animateB, setAnimateB] = useState(false)
+  const [animateSwap, setAnimateSwap] = useState(false)
+  const prevSwapped = useRef(state.swapped)
 
-	// Detect score changes for animation
-	useEffect(() => {
-		if (state.teamA.score !== prevScoreA) {
-			setAnimateA(true);
-			setPrevScoreA(state.teamA.score);
-			const t = setTimeout(() => setAnimateA(false), 300);
-			return () => clearTimeout(t);
-		}
-	}, [state.teamA.score, prevScoreA]);
+  // Detect score changes for animation
+  useEffect(() => {
+    if (state.teamA.score !== prevScoreA) {
+      setAnimateA(true)
+      setPrevScoreA(state.teamA.score)
+      const t = setTimeout(() => setAnimateA(false), 300)
+      return () => clearTimeout(t)
+    }
+  }, [state.teamA.score, prevScoreA])
 
-	useEffect(() => {
-		if (state.teamB.score !== prevScoreB) {
-			setAnimateB(true);
-			setPrevScoreB(state.teamB.score);
-			const t = setTimeout(() => setAnimateB(false), 300);
-			return () => clearTimeout(t);
-		}
-	}, [state.teamB.score, prevScoreB]);
+  useEffect(() => {
+    if (state.teamB.score !== prevScoreB) {
+      setAnimateB(true)
+      setPrevScoreB(state.teamB.score)
+      const t = setTimeout(() => setAnimateB(false), 300)
+      return () => clearTimeout(t)
+    }
+  }, [state.teamB.score, prevScoreB])
 
-	// Detect swap changes
-	useEffect(() => {
-		if (state.swapped !== prevSwapped.current) {
-			setAnimateSwap(true);
-			prevSwapped.current = state.swapped;
-			const t = setTimeout(() => setAnimateSwap(false), 500);
-			return () => clearTimeout(t);
-		}
-	}, [state.swapped]);
+  // Detect swap changes
+  useEffect(() => {
+    if (state.swapped !== prevSwapped.current) {
+      setAnimateSwap(true)
+      prevSwapped.current = state.swapped
+      const t = setTimeout(() => setAnimateSwap(false), 500)
+      return () => clearTimeout(t)
+    }
+  }, [state.swapped])
 
-	const leftTeam = state.swapped ? "B" : "A";
-	const rightTeam = state.swapped ? "A" : "B";
-	const leftData = state.swapped ? state.teamB : state.teamA;
-	const rightData = state.swapped ? state.teamA : state.teamB;
-	const servingLeft =
-		(state.serving === "A" && !state.swapped) ||
-		(state.serving === "B" && state.swapped);
+  const leftTeam = state.swapped ? "B" : "A"
+  const rightTeam = state.swapped ? "A" : "B"
+  const leftData = state.swapped ? state.teamB : state.teamA
+  const rightData = state.swapped ? state.teamA : state.teamB
+  const servingLeft =
+    (state.serving === "A" && !state.swapped) ||
+    (state.serving === "B" && state.swapped)
 
-	const leftAnimate = state.swapped ? animateB : animateA;
-	const rightAnimate = state.swapped ? animateA : animateB;
+  const leftAnimate = state.swapped ? animateB : animateA
+  const rightAnimate = state.swapped ? animateA : animateB
 
-	const setWins = countSetWins(state.setHistory);
-	const leftSetWins = leftTeam === "A" ? setWins.teamA : setWins.teamB;
-	const rightSetWins = rightTeam === "A" ? setWins.teamA : setWins.teamB;
+  const setWins = countSetWins(state.setHistory)
+  const leftSetWins = leftTeam === "A" ? setWins.teamA : setWins.teamB
+  const rightSetWins = rightTeam === "A" ? setWins.teamA : setWins.teamB
 
-	return (
-		<div className="scoreboard-root">
-			{/* Set Badge */}
-			<div className="set-badge">
-				<span>SET {state.currentSet}</span>
-			</div>
+  return (
+    <div className="scoreboard-root">
+      {/* Set Badge */}
+      <div className="set-badge">
+        <span>SET {state.currentSet}</span>
+      </div>
 
-			{/* Set Wins Display — positioned above panels */}
-			{state.setHistory.length > 0 && (
-				<div className="set-wins-bar">
-					<div className="set-wins set-wins-left">
-						<span className="set-wins-count">{leftSetWins}</span>
-					</div>
-					<div className="set-wins-label">ĐIỂM SET</div>
-					<div className="set-wins set-wins-right">
-						<span className="set-wins-count">{rightSetWins}</span>
-					</div>
-				</div>
-			)}
+      {/* Set Wins Display — positioned above panels */}
+      {state.setHistory.length > 0 && (
+        <div className="set-wins-bar">
+          <div className="set-wins set-wins-left">
+            <span className="set-wins-count">{leftSetWins}</span>
+          </div>
+          <div className="set-wins-label">ĐIỂM SET</div>
+          <div className="set-wins set-wins-right">
+            <span className="set-wins-count">{rightSetWins}</span>
+          </div>
+        </div>
+      )}
 
-			{/* Set History Pills */}
-			{state.setHistory.length > 0 && (
-				<div className="set-history">
-					{state.setHistory.map((record, i) => (
-						<div key={i} className="set-pill">
-							<span className="set-pill-label">S{record.setNumber}</span>
-							<span
-								className={record.teamA > record.teamB ? "set-pill-win" : ""}
-							>
-								{record.teamA}
-							</span>
-							<span className="set-pill-sep">-</span>
-							<span
-								className={record.teamB > record.teamA ? "set-pill-win" : ""}
-							>
-								{record.teamB}
-							</span>
-						</div>
-					))}
-				</div>
-			)}
+      {/* Set History Pills */}
+      {state.setHistory.length > 0 && (
+        <div className="set-history">
+          {state.setHistory.map((record) => (
+            <div key={record.setNumber} className="set-pill">
+              <span className="set-pill-label">S{record.setNumber}</span>
+              <span
+                className={record.teamA > record.teamB ? "set-pill-win" : ""}
+              >
+                {record.teamA}
+              </span>
+              <span className="set-pill-sep">-</span>
+              <span
+                className={record.teamB > record.teamA ? "set-pill-win" : ""}
+              >
+                {record.teamB}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
 
-			{/* Scoreboard panels */}
-			<div className={`panels ${animateSwap ? "swapping" : ""}`}>
-				{/* Left Panel */}
-				<div className={`panel panel-left ${servingLeft ? "serving" : ""}`}>
-					<div className="team-name">{leftData.name}</div>
-					<div className={`score ${leftAnimate ? "score-pop" : ""}`}>
-						{leftData.score}
-					</div>
+      {/* Scoreboard panels */}
+      <div className={`panels ${animateSwap ? "swapping" : ""}`}>
+        {/* Left Panel */}
+        <div className={`panel panel-left ${servingLeft ? "serving" : ""}`}>
+          <div className={`serve-text ${servingLeft ? "serving-active" : ""}`}>
+            GIAO BÓNG
+          </div>
+          <div className="team-name">{leftData.name}</div>
+          <div className={`score ${leftAnimate ? "score-pop" : ""}`}>
+            {leftData.score}
+          </div>
+        </div>
 
-				</div>
+        {/* Divider */}
+        <div className="divider">
+          <div className="divider-line" />
+          <div className="divider-vs">VS</div>
+          <div className="divider-line" />
+        </div>
 
-				{/* Divider */}
-				<div className="divider">
-					<div className="divider-line" />
-					<div className="divider-serve-indicator">
-						<svg
-							viewBox="0 0 24 24"
-							fill="currentColor"
-							className={`divider-serve-arrow ${servingLeft ? "point-left" : "point-right"}`}
-						>
-							<path d="M8 5v14l11-7z" />
-						</svg>
-					</div>
-					<div className="divider-vs">VS</div>
-					<div className="divider-line" />
-				</div>
+        {/* Right Panel */}
+        <div className={`panel panel-right ${!servingLeft ? "serving" : ""}`}>
+          <div className={`serve-text ${!servingLeft ? "serving-active" : ""}`}>
+            GIAO BÓNG
+          </div>
+          <div className="team-name">{rightData.name}</div>
+          <div className={`score ${rightAnimate ? "score-pop" : ""}`}>
+            {rightData.score}
+          </div>
+        </div>
+      </div>
 
-				{/* Right Panel */}
-				<div className={`panel panel-right ${!servingLeft ? "serving" : ""}`}>
-					<div className="team-name">{rightData.name}</div>
-					<div className={`score ${rightAnimate ? "score-pop" : ""}`}>
-						{rightData.score}
-					</div>
-
-				</div>
-			</div>
-
-			<style>{`
+      <style>{`
         .scoreboard-root {
           position: fixed;
           inset: 0;
@@ -271,6 +266,24 @@ export default function Scoreboard() {
           border-left: 3px solid rgba(250, 204, 21, 0.4);
         }
 
+        /* Serve Text */
+        .serve-text {
+          font-size: clamp(0.9rem, 1.8vw, 1.5rem);
+          font-weight: 800;
+          color: #facc15;
+          letter-spacing: 0.2em;
+          margin-bottom: 0.5rem;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: all 0.3s ease;
+          text-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
+        }
+        .serve-text.serving-active {
+          opacity: 1;
+          transform: translateY(0);
+          animation: pulse-glow 2.5s ease-in-out infinite;
+        }
+
         /* Team Name */
         .team-name {
           font-size: clamp(1.5rem, 4vw, 4rem);
@@ -298,32 +311,7 @@ export default function Scoreboard() {
           animation: score-bounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Unified Serving Indicator */
-        .divider-serve-indicator {
-          color: #facc15;
-          margin: 1.5rem 0;
-          animation: pulse-glow 2s ease-in-out infinite;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: rgba(0, 0, 0, 0.4);
-          border-radius: 50%;
-          width: clamp(2.5rem, 4vw, 3.5rem);
-          height: clamp(2.5rem, 4vw, 3.5rem);
-          box-shadow: 0 0 20px rgba(250, 204, 21, 0.15);
-          border: 1px solid rgba(250, 204, 21, 0.1);
-        }
-        .divider-serve-arrow {
-          width: clamp(1.2rem, 2vw, 1.8rem);
-          height: clamp(1.2rem, 2vw, 1.8rem);
-          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .point-left {
-          transform: rotate(180deg);
-        }
-        .point-right {
-          transform: rotate(0deg);
-        }
+
 
         /* Divider */
         .divider {
@@ -379,6 +367,23 @@ export default function Scoreboard() {
           100% { opacity: 1; }
         }
       `}</style>
-		</div>
-	);
+
+      {/* Auto-next-set Countdown Overlay */}
+      {state.nextSetCountdown !== null && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-zinc-900 border border-zinc-800 p-12 rounded-3xl text-center shadow-2xl animate-in zoom-in duration-300">
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Set {state.currentSet} Kết Thúc
+            </h2>
+            <p className="text-2xl text-zinc-400 mb-8">
+              Chuyển sang Set {state.currentSet + 1} trong
+            </p>
+            <div className="text-8xl font-mono font-bold text-emerald-500 animate-pulse">
+              {state.nextSetCountdown}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
