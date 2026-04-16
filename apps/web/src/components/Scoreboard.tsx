@@ -368,19 +368,14 @@ export default function Scoreboard() {
         }
       `}</style>
 
-      {/* Auto-next-set Countdown Overlay */}
+      {/* Auto-next-set Countdown Text */}
       {state.nextSetCountdown !== null && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-zinc-900 border border-zinc-800 p-12 rounded-3xl text-center shadow-2xl animate-in zoom-in duration-300">
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Set {state.currentSet} Kết Thúc
-            </h2>
-            <p className="text-2xl text-zinc-400 mb-8">
-              Chuyển sang Set {state.currentSet + 1} trong
-            </p>
-            <div className="text-8xl font-mono font-bold text-emerald-500 animate-pulse">
-              {state.nextSetCountdown}
-            </div>
+        <div className="absolute bottom-[10%] md:bottom-[15%] left-1/2 -translate-x-1/2 z-50 flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="text-white/60 font-bold tracking-[0.2em] uppercase text-xs md:text-sm mb-1 text-center">
+            Tự động sang Set {state.currentSet + 1}
+          </div>
+          <div className="text-emerald-400 font-mono font-black text-5xl md:text-6xl animate-pulse drop-shadow-[0_0_15px_rgba(52,211,153,0.5)]">
+            {state.nextSetCountdown}
           </div>
         </div>
       )}

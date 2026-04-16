@@ -267,9 +267,7 @@ export default function SettingsDialog({
                       variant={recording === key ? "default" : "outline"}
                       onClick={() => setRecording(key)}
                       className={`inline-flex h-8 min-w-16 items-center justify-center px-3 font-mono text-sm transition-all ${
-                        recording === key
-                          ? "animate-pulse"
-                          : ""
+                        recording === key ? "animate-pulse" : ""
                       }`}
                     >
                       {recording === key

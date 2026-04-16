@@ -390,15 +390,21 @@ export default function ControlPanel() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[80px]">Set</TableHead>
-                  <TableHead className="text-center">{state.teamA.name}</TableHead>
-                  <TableHead className="text-center">{state.teamB.name}</TableHead>
+                  <TableHead className="text-center">
+                    {state.teamA.name}
+                  </TableHead>
+                  <TableHead className="text-center">
+                    {state.teamB.name}
+                  </TableHead>
                   <TableHead className="text-center">Thắng</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {state.setHistory.map((record) => (
                   <TableRow key={record.setNumber}>
-                    <TableCell className="font-medium">{record.setNumber}</TableCell>
+                    <TableCell className="font-medium">
+                      {record.setNumber}
+                    </TableCell>
                     <TableCell
                       className={`text-center font-mono font-bold ${record.teamA > record.teamB ? "text-emerald-400" : ""}`}
                     >
