@@ -221,7 +221,7 @@ export default function ControlPanel() {
             <IconSettings className="size-4" />
             <span className="hidden md:inline">Cài đặt</span>
           </Button>
-          <a href="/display" target="_blank" rel="noopener noreferrer">
+          <a href="./display" target="_blank" rel="noopener noreferrer">
             <Button variant="outline" size="sm">
               Hiển thị ↗
             </Button>
