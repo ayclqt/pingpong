@@ -13,8 +13,16 @@ const repoName = process.env.GITHUB_REPOSITORY?.split("/")[1]
 
 // https://astro.build/config
 export default defineConfig({
-  site: isGithubActions ? (pagesSite || `https://${repoOwner}.github.io`) : undefined,
-  base: isGithubActions ? (pagesSite ? "/" : (repoName ? `/${repoName}` : "/")) : undefined,
+  site: isGithubActions
+    ? pagesSite || `https://${repoOwner}.github.io`
+    : undefined,
+  base: isGithubActions
+    ? pagesSite
+      ? "/"
+      : repoName
+        ? `/${repoName}`
+        : "/"
+    : undefined,
   vite: {
     plugins: [tailwindcss()],
     css: {

@@ -232,9 +232,12 @@ export default function ControlPanel() {
             <IconSettings className="size-4" />
             <span className="hidden md:inline">Cài đặt</span>
           </Button>
-          <a 
-            href={`${import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL}/display`.replace('//', '/')} 
-            target="_blank" 
+          <a
+            href={`${import.meta.env.BASE_URL === "/" ? "" : import.meta.env.BASE_URL}/display`.replace(
+              "//",
+              "/"
+            )}
+            target="_blank"
             rel="noopener noreferrer"
           >
             <Button variant="outline" size="sm">

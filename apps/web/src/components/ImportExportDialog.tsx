@@ -76,8 +76,8 @@ export default function ImportExportDialog({
 
           <TabsContent value="import" className="space-y-4 pt-4">
             <p className="text-muted-foreground text-sm">
-              Nhập kết quả trận đấu (JSON file) đã lưu trước đó để tiếp tục.
-              Kết quả hiện tại sẽ bị ghi đè (không ảnh hưởng tới cài đặt).
+              Nhập kết quả trận đấu (JSON file) đã lưu trước đó để tiếp tục. Kết
+              quả hiện tại sẽ bị ghi đè (không ảnh hưởng tới cài đặt).
             </p>
             <div className="flex justify-center py-4">
               <input

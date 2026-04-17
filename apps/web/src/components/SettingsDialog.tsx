@@ -17,7 +17,7 @@ import {
   getEventKeyCombo,
   getHotkeyLabel,
 } from "@workspace/ui/lib/game-state"
-import { useCallback, useEffect, useState, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 const HOTKEY_LABELS: Record<keyof HotkeyConfig, string> = {
   leftIncrement: "Bên trái +1 điểm",
@@ -58,7 +58,9 @@ export default function SettingsDialog({
       autoNextSet: draft.autoNextSet,
       autoNextSetDelay: draft.autoNextSetDelay,
     }
-    const blob = new Blob([JSON.stringify(settingsOnly, null, 2)], { type: "application/json" })
+    const blob = new Blob([JSON.stringify(settingsOnly, null, 2)], {
+      type: "application/json",
+    })
     const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
     link.href = url
@@ -80,12 +82,22 @@ export default function SettingsDialog({
           setDraft((prev) => ({
             ...prev,
             ...(data.hotkeys !== undefined && { hotkeys: data.hotkeys }),
-            ...(data.serveInterval !== undefined && { serveInterval: data.serveInterval }),
-            ...(data.autoServeSwitch !== undefined && { autoServeSwitch: data.autoServeSwitch }),
-            ...(data.targetScore !== undefined && { targetScore: data.targetScore }),
+            ...(data.serveInterval !== undefined && {
+              serveInterval: data.serveInterval,
+            }),
+            ...(data.autoServeSwitch !== undefined && {
+              autoServeSwitch: data.autoServeSwitch,
+            }),
+            ...(data.targetScore !== undefined && {
+              targetScore: data.targetScore,
+            }),
             ...(data.winByTwo !== undefined && { winByTwo: data.winByTwo }),
-            ...(data.autoNextSet !== undefined && { autoNextSet: data.autoNextSet }),
-            ...(data.autoNextSetDelay !== undefined && { autoNextSetDelay: data.autoNextSetDelay }),
+            ...(data.autoNextSet !== undefined && {
+              autoNextSet: data.autoNextSet,
+            }),
+            ...(data.autoNextSetDelay !== undefined && {
+              autoNextSetDelay: data.autoNextSetDelay,
+            }),
           }))
         }
       } catch {
