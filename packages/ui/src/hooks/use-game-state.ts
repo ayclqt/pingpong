@@ -246,14 +246,24 @@ export function useGameState(role: Role) {
 
 	const importState = useCallback(
 		(imported: Partial<GameState>) => {
-			setState(() => {
+			setState((prev) => {
 				const next: GameState = {
-					...DEFAULT_GAME_STATE,
-					...imported,
-					hotkeys: {
-						...DEFAULT_GAME_STATE.hotkeys,
-						...(imported.hotkeys || {}),
-					},
+					...prev,
+					...(imported.teamA !== undefined && { teamA: imported.teamA }),
+					...(imported.teamB !== undefined && { teamB: imported.teamB }),
+					...(imported.serving !== undefined && { serving: imported.serving }),
+					...(imported._initialServer !== undefined && { _initialServer: imported._initialServer }),
+					...(imported.currentSet !== undefined && { currentSet: imported.currentSet }),
+					...(imported.swapped !== undefined && { swapped: imported.swapped }),
+					...(imported.setHistory !== undefined && { setHistory: imported.setHistory }),
+					...(imported.nextSetCountdown !== undefined && { nextSetCountdown: imported.nextSetCountdown }),
+					...(imported.hotkeys !== undefined && { hotkeys: imported.hotkeys }),
+					...(imported.serveInterval !== undefined && { serveInterval: imported.serveInterval }),
+					...(imported.autoServeSwitch !== undefined && { autoServeSwitch: imported.autoServeSwitch }),
+					...(imported.targetScore !== undefined && { targetScore: imported.targetScore }),
+					...(imported.winByTwo !== undefined && { winByTwo: imported.winByTwo }),
+					...(imported.autoNextSet !== undefined && { autoNextSet: imported.autoNextSet }),
+					...(imported.autoNextSetDelay !== undefined && { autoNextSetDelay: imported.autoNextSetDelay }),
 				};
 				broadcast(next);
 				return next;

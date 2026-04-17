@@ -153,8 +153,19 @@ export default function ControlPanel() {
   const handleExport = (format: "json" | "csv" | "txt") => {
     let content = ""
     let mime = "text/plain"
+    const filename = `pingpong_match_export.${format}`
     if (format === "json") {
-      content = JSON.stringify(state, null, 2)
+      const resultsOnly = {
+        teamA: state.teamA,
+        teamB: state.teamB,
+        serving: state.serving,
+        _initialServer: state._initialServer,
+        currentSet: state.currentSet,
+        swapped: state.swapped,
+        setHistory: state.setHistory,
+        nextSetCountdown: state.nextSetCountdown,
+      }
+      content = JSON.stringify(resultsOnly, null, 2)
       mime = "application/json"
     } else if (format === "csv") {
       content = exportSetHistoryCSV(state)
@@ -167,7 +178,7 @@ export default function ControlPanel() {
     const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
     link.href = url
-    link.download = `pingpong_match_export.${format}`
+    link.download = filename
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)

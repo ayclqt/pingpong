@@ -1,3 +1,4 @@
+import { IconDownload, IconUpload } from "@tabler/icons-react"
 import { Button } from "@workspace/ui/components/button"
 import {
   Dialog,
@@ -16,7 +17,7 @@ import {
   getEventKeyCombo,
   getHotkeyLabel,
 } from "@workspace/ui/lib/game-state"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, useRef } from "react"
 
 const HOTKEY_LABELS: Record<keyof HotkeyConfig, string> = {
   leftIncrement: "Bên trái +1 điểm",
@@ -45,6 +46,55 @@ export default function SettingsDialog({
 }: SettingsDialogProps) {
   const [draft, setDraft] = useState<Partial<GameState>>({})
   const [recording, setRecording] = useState<keyof HotkeyConfig | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleExportSettings = () => {
+    const settingsOnly = {
+      hotkeys: draft.hotkeys,
+      serveInterval: draft.serveInterval,
+      autoServeSwitch: draft.autoServeSwitch,
+      targetScore: draft.targetScore,
+      winByTwo: draft.winByTwo,
+      autoNextSet: draft.autoNextSet,
+      autoNextSetDelay: draft.autoNextSetDelay,
+    }
+    const blob = new Blob([JSON.stringify(settingsOnly, null, 2)], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = url
+    link.download = `pingpong_settings.json`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const handleImportSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target?.result as string)
+        if (data) {
+          setDraft((prev) => ({
+            ...prev,
+            ...(data.hotkeys !== undefined && { hotkeys: data.hotkeys }),
+            ...(data.serveInterval !== undefined && { serveInterval: data.serveInterval }),
+            ...(data.autoServeSwitch !== undefined && { autoServeSwitch: data.autoServeSwitch }),
+            ...(data.targetScore !== undefined && { targetScore: data.targetScore }),
+            ...(data.winByTwo !== undefined && { winByTwo: data.winByTwo }),
+            ...(data.autoNextSet !== undefined && { autoNextSet: data.autoNextSet }),
+            ...(data.autoNextSetDelay !== undefined && { autoNextSetDelay: data.autoNextSetDelay }),
+          }))
+        }
+      } catch {
+        alert("Lỗi không đọc được file cài đặt JSON hợp lệ.")
+      }
+    }
+    reader.readAsText(file)
+    e.target.value = "" // Reset input
+  }
 
   const handleKeyCapture = useCallback(
     (e: React.KeyboardEvent) => {
@@ -283,17 +333,46 @@ export default function SettingsDialog({
           </div>
         </div>
 
-        <DialogFooter className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            type="button"
-          >
-            Huỷ
-          </Button>
-          <Button onClick={handleSave} type="button">
-            Lưu thay đổi
-          </Button>
+        <DialogFooter className="flex w-full flex-col sm:flex-row sm:justify-between items-center gap-4 mt-4">
+          <div className="flex gap-2 w-full sm:w-auto">
+            <Button
+              variant="outline"
+              onClick={handleExportSettings}
+              type="button"
+              className="flex-1 sm:flex-none"
+            >
+              <IconDownload className="w-4 h-4 mr-2" />
+              Xuất
+            </Button>
+            <input
+              type="file"
+              accept=".json"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleImportSettings}
+            />
+            <Button
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+              type="button"
+              className="flex-1 sm:flex-none"
+            >
+              <IconUpload className="w-4 h-4 mr-2" />
+              Nhập
+            </Button>
+          </div>
+          <div className="flex gap-2 w-full sm:w-auto justify-end">
+            <Button
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              type="button"
+            >
+              Huỷ
+            </Button>
+            <Button onClick={handleSave} type="button">
+              Lưu thay đổi
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

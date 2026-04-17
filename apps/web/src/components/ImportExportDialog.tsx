@@ -63,7 +63,7 @@ export default function ImportExportDialog({
                   <SelectValue placeholder="Chọn định dạng" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="json">State Hoàn Chỉnh (JSON)</SelectItem>
+                  <SelectItem value="json">Dữ liệu trận đấu (JSON)</SelectItem>
                   <SelectItem value="csv">Điểm Số Các Set (CSV)</SelectItem>
                   <SelectItem value="txt">Điểm Số Các Set (TXT)</SelectItem>
                 </SelectContent>
@@ -76,8 +76,8 @@ export default function ImportExportDialog({
 
           <TabsContent value="import" className="space-y-4 pt-4">
             <p className="text-muted-foreground text-sm">
-              Nhập trạng thái trận đấu (JSON file) đã lưu trước đó để tiếp tục.
-              Dữ liệu hiện tại sẽ bị ghi đè hoàn toàn.
+              Nhập kết quả trận đấu (JSON file) đã lưu trước đó để tiếp tục.
+              Kết quả hiện tại sẽ bị ghi đè (không ảnh hưởng tới cài đặt).
             </p>
             <div className="flex justify-center py-4">
               <input
